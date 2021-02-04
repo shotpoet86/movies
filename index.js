@@ -7,25 +7,30 @@ const fetchData = async (searchTerm) => {
             s: searchTerm
         }
     });
-    console.log(response.data);
+    if (response.data.Error) {
+        return [];
+    }
+    return response.data.Search;
 };
 
 /*calls html input element*/
 const input = document.querySelector('input');
 
-/*var for setTimeout on user search*/
-let timeoutId;
 
 /*listens for user input and waits 1000ms after user stops typing.
 * This is to ensure not overusing api daily requests*/
-const onInput = (event) => {
-    if (timeoutId) {
-        clearTimeout(timeoutId);
+const onInput = async event => {
+    const movies = await fetchData(event.target.value);
+    for (let movie of movies) {
+        const div = document.createElement('div');
+        div.innerHTML = `
+       <img src="${movie.Poster}"/>
+       <h1>${movie.Title}</h1>
+       `;
+        document.querySelector('#target').appendChild(div);
     }
-    timeoutId = setTimeout(() => {
-        fetchData(event.target.value);
-    }, 1000);
 };
 
+
 /*event listener for html input. Calls onInput function when user stops typing*/
-input.addEventListener('input', onInput);
+input.addEventListener('input', debounce(onInput, 1000));
