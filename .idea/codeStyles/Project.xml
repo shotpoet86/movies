@@ -4,6 +4,7 @@
       <option name="USE_DOUBLE_QUOTES" value="false" />
     </CssCodeStyleSettings>
     <HTMLCodeStyleSettings>
+      <option name="HTML_UNIFORM_INDENT" value="true" />
       <option name="HTML_QUOTE_STYLE" value="Single" />
     </HTMLCodeStyleSettings>
     <JSCodeStyleSettings version="0">
