@@ -34,7 +34,10 @@ const resultsWrapper = document.querySelector('.results');
 * This is to ensure not overusing api daily requests*/
 const onInput = async event => {
     const movies = await fetchData(event.target.value);
-
+    if (!movies.length) {
+        dropdown.classList.remove('is-active');
+        return;
+    }
     resultsWrapper.innerHTML = '';
     dropdown.classList.add('is-active');
 
@@ -54,3 +57,9 @@ const onInput = async event => {
 
 /*event listener for html input. Calls onInput function when user stops typing*/
 input.addEventListener('input', debounce(onInput, 1000));
+
+document.addEventListener('click', event => {
+    if (!root.contains(event.target)) {
+        dropdown.classList.remove('is-active');
+    }
+});
