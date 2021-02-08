@@ -76,6 +76,6 @@ const onMovieSelect = async movie => {
             i: movie.imdbID,
         }
     });
-
+    /*test to log respone from api*/
     console.log(response.data);
 };
