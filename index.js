@@ -47,7 +47,7 @@ const onInput = async event => {
 
         option.classList.add('dropdown-item');
         option.innerHTML = `
-       <img src="${imgSrc}"/>
+       <img src='${imgSrc}'/>
        ${movie.Title}
        `;
         option.addEventListener('click', () => {
@@ -69,6 +69,7 @@ document.addEventListener('click', event => {
     }
 });
 
+
 const onMovieSelect = async movie => {
     const response = await axios.get('http://www.omdbapi.com/', {
         params: {
@@ -77,5 +78,23 @@ const onMovieSelect = async movie => {
         }
     });
     /*test to log respone from api*/
-    console.log(response.data);
+    document.querySelector('#summary').innerHTML = movieTemplate(response.data);
+};
+
+const movieTemplate = (movieDetail) => {
+    return `
+        <article class ='media'>
+        <figure class ='media-left'>
+        <p class='image'>
+        <img src='${movieDetail.Poster}' alt=''/>
+</p>
+</figure>
+<div class='media-content'>
+<div class='content'>
+<h1>${movieDetail.Title}</h1>
+<h4>${movieDetail.Genre}</h4>
+<p>${movieDetail.Plot}</p>
+</div>
+</div>
+</article>`;
 };
