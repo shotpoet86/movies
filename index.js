@@ -1,17 +1,5 @@
 /*calls movie api using free api key inside async function and
 * returns user search results*/
-const fetchData = async (searchTerm) => {
-    const response = await axios.get('http://www.omdbapi.com/', {
-        params: {
-            apiKey: '32c05230',
-            s: searchTerm
-        }
-    });
-    if (response.data.Error) {
-        return [];
-    }
-    return response.data.Search;
-};
 
 createAutoComplete({
     root: document.querySelector('.autocomplete'),
@@ -25,6 +13,18 @@ createAutoComplete({
     },
     inputValue(movie) {
         return movie.Title;
+    },
+    async fetchData(searchTerm) {
+        const response = await axios.get('http://www.omdbapi.com/', {
+            params: {
+                apiKey: '32c05230',
+                s: searchTerm
+            }
+        });
+        if (response.data.Error) {
+            return [];
+        }
+        return response.data.Search;
     }
 });
 
