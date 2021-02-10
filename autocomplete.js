@@ -1,4 +1,5 @@
-const createAutoComplete = ({root}) => {
+// eslint-disable-next-line no-unused-vars
+const createAutoComplete = ({root, renderOption, onOptionSelect, inputValue}) => {
     root.innerHTML = `
         <label><b>Search for a Movie</b></label>
         <input class='input' type='text'/>
@@ -27,17 +28,12 @@ const createAutoComplete = ({root}) => {
 
         for (let movie of movies) {
             const option = document.createElement('a');
-            const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
-
             option.classList.add('dropdown-item');
-            option.innerHTML = `
-       <img src='${imgSrc}' alt=''/>
-       ${movie.Title}
-       `;
+            option.innerHTML = renderOption(movie);
             option.addEventListener('click', () => {
                 dropdown.classList.remove('is-active');
-                input.value = movie.Title;
-                onMovieSelect(movie);
+                input.value = inputValue(movie);
+                onOptionSelect(movie);
             });
             resultsWrapper.appendChild(option);
         }
