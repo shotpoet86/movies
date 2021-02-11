@@ -1,16 +1,10 @@
-/*calls movie api using free api key inside async function and
-* returns user search results*/
-
-createAutoComplete({
-    root: document.querySelector('.autocomplete'),
+const autocompleteConfig = {
     renderOption(movie) {
         const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
         return `<img src='${imgSrc}' alt=''/>
             ${movie.Title}`;
     },
-    onOptionSelect(movie) {
-        onMovieSelect(movie);
-    },
+
     inputValue(movie) {
         return movie.Title;
     },
@@ -26,9 +20,29 @@ createAutoComplete({
         }
         return response.data.Search;
     }
+};
+
+
+createAutoComplete({
+    ...autocompleteConfig,
+    root: document.querySelector('#left-autocomplete'),
+    onOptionSelect(movie) {
+        document.querySelector('.tutorial').classList.add('is-hidden');
+        onMovieSelect(movie, document.querySelector('#left-summary'), 'left');
+    },
+});
+createAutoComplete({
+    ...autocompleteConfig,
+    root: document.querySelector('#right-autocomplete'),
+    onOptionSelect(movie) {
+        document.querySelector('.tutorial').classList.add('is-hidden');
+        onMovieSelect(movie, document.querySelector('#right-summary'), 'right');
+    },
 });
 
-const onMovieSelect = async movie => {
+let leftMovie;
+let rightMovie;
+const onMovieSelect = async (movie, summaryElement, side) => {
     const response = await axios.get('http://www.omdbapi.com/', {
         params: {
             apiKey: '32c05230',
@@ -36,9 +50,21 @@ const onMovieSelect = async movie => {
         }
     });
     /*test to log respone from api*/
-    document.querySelector('#summary').innerHTML = movieTemplate(response.data);
-};
+    summaryElement.innerHTML = movieTemplate(response.data);
 
+    if (side === 'left') {
+        leftMovie = response.data;
+    } else {
+        rightMovie = response.data;
+    }
+
+    if (leftMovie && rightMovie) {
+        runComparison();
+    }
+};
+const runComparison = () => {
+    console.log('time for comparison');
+};
 const movieTemplate = (movieDetail) => {
     return `
         <article class ='media'>
