@@ -88,7 +88,7 @@ const movieTemplate = (movieDetail) => {
     const metascores = parseInt(movieDetail.Metascore);
     const imdbRating = parseFloat(movieDetail.imdbRating);
     const imdbVotes = parseInt(movieDetail.imdbVotes.replace(/,/g, ''));
-
+    /*count*/
     let count = 0;
     const awards = movieDetail.Awards.split(' ').reduce((prev, word) => {
         const value = parseInt(word);
